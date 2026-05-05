@@ -3,7 +3,7 @@
 
 # Speech Recognition Settings
 whisper:
-  model_size: "tiny"          # tiny, base, small, medium, large
+  model_size: "small"         # tiny, base, small, medium, large
   model_type: "multilingual"  # multilingual or english-only
   compute_type: "auto"        # auto, float16, int8 (CPU), int8_float16 (GPU)
   beam_size: 5
@@ -43,5 +43,6 @@ post_processing:
 model:
   download_url_tiny: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin"
   download_url_base: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin"
+  download_url_small: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.bin"
   storage_dir_windows: "./core/models/"
   storage_dir_android: "models/"

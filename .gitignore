@@ -12,6 +12,9 @@ venv/
 core/models/*.bin
 core/models/*.pt
 core/models/*.ggml
+core/models/models--*/
+core/models/CACHEDIR.TAG
+core/models/.locks/
 
 # Android
 android/.gradle/
@@ -30,6 +33,7 @@ android/.idea/
 
 # Windows
 windows/__pycache__/
+windows/temp_audio/
 
 # OS
 .DS_Store
