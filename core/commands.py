@@ -86,6 +86,12 @@ class CommandProcessor:
                 if candidate in self.commands:
                     cmd = self.commands[candidate]
                     actions.append(cmd.phrase)
+                    # For text-type commands (punctuation, emoji), insert their value
+                    # so it appears at the right position in the output.
+                    # For key-type commands (backspace, enter, etc.), they're handled
+                    # separately by the injector and should be removed from output.
+                    if cmd.action == "text":
+                        output_parts.append(cmd.value)
                     i = j
                     matched = True
                     break

@@ -106,6 +106,7 @@ class TrayApp:
             "Whisper Keyboard - Starting...",
             menu=self._build_menu(),
         )
+        print("[Whisper Keyboard] Tray icon created — check system tray / overflow (^)")
 
         # Load model in background so tray appears immediately
         threading.Thread(target=self._load_in_background, daemon=True).start()
@@ -261,11 +262,10 @@ class TrayApp:
             final_text = post_process(processed_text, self.language)
 
             if final_text or actions:
-                self._update_status("Typing...")
-                # Small delay to let the user release the hotkey fully
+                self._update_status("Done")
+                print(f"[Whisper] {final_text!r}" + (f"  cmds={actions}" if actions else ""))
                 time.sleep(0.1)
                 self.injector.execute_actions(final_text, actions, self.command_processor)
-                self._update_status("Done")
             else:
                 self._update_status("No speech detected")
 
