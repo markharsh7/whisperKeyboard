@@ -29,7 +29,7 @@ def main():
         hotkey_cfg = {"key": "cmd+alt"}
         audio_cfg = {}
 
-    model_size = whisper_cfg.get("model_size", "medium")
+    model_size = whisper_cfg.get("model_size", "small")
     hotkey = hotkey_cfg.get("key", "cmd+alt")
     input_device = audio_cfg.get("input_device", None)
     initial_prompt = whisper_cfg.get("initial_prompt", "") or None

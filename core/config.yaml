@@ -3,9 +3,9 @@
 
 # Speech Recognition Settings
 whisper:
-  model_size: "medium"        # medium (best Hinglish), small, turbo, large-v3
+  model_size: "small"         # small (best CPU), base (faster), medium (best accuracy)
   model_type: "multilingual"  # multilingual or english-only
-  compute_type: "auto"        # auto, float16, int8 (CPU), int8_float16 (GPU)
+  compute_type: "int8"        # int8 (fast CPU), int8_float16 (GPU), auto, float16
   beam_size: 5
   language: "auto"            # auto, en, hi
   vad_filter: true            # Voice activity detection
