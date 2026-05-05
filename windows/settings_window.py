@@ -16,7 +16,7 @@ class SettingsWindow:
         self,
         current_model: str = "small",
         current_language: str = "auto",
-        current_hotkey: str = "ctrl+shift+v",
+        current_hotkey: str = "cmd+alt",
         on_save: Optional[Callable[[str, str, str], None]] = None,
     ):
         self.current_model = current_model
@@ -148,7 +148,7 @@ class SettingsWindow:
 def open_settings(
     current_model: str = "small",
     current_language: str = "auto",
-    current_hotkey: str = "ctrl+shift+v",
+    current_hotkey: str = "cmd+alt",
     on_save: Optional[Callable[[str, str, str], None]] = None,
 ) -> None:
     """Open the settings window (standalone or from tray app)."""

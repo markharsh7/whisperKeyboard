@@ -64,7 +64,7 @@ class WhisperEngine:
             download_root=download_root,
             local_files_only=False,
         )
-        print(f"[WhisperEngine] Loaded {self._model_id} on {self.device}/{self.compute_type}")
+        print(f"[Whisper] {self._model_id} loaded")
 
     def is_loaded(self) -> bool:
         """Check if the model is loaded."""

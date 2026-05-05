@@ -24,7 +24,7 @@ audio:
 
 # Hotkey Settings (Windows only)
 hotkey:
-  key: "ctrl+shift+v"         # Default push-to-talk hotkey
+  key: "cmd+alt"              # Default push-to-talk hotkey
   mode: "hold"                # hold = push-to-talk, toggle = tap to start/stop
 
 # Command Processing

@@ -24,7 +24,7 @@ def main():
         hotkey_cfg = get_hotkey_config(config)
     except Exception:
         whisper_cfg = {"model_size": "small"}
-        hotkey_cfg = {"key": "ctrl+shift+v"}
+        hotkey_cfg = {"key": "cmd+alt"}
 
     model_size = whisper_cfg.get("model_size", "small")
     hotkey = hotkey_cfg.get("key", "ctrl+shift+v")

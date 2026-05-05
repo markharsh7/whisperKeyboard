@@ -48,7 +48,7 @@ class TrayApp:
         self,
         model_size: str = "small",
         language: str = "auto",
-        hotkey: str = "ctrl+shift+v",
+        hotkey: str = "cmd+alt",
         compute_type: str = "auto",
         device: str = "cpu",
     ):
@@ -97,24 +97,33 @@ class TrayApp:
 
     def run(self) -> None:
         """Start the tray application (blocks until exit)."""
-        self.setup()
-
         idle_icon = _create_icon(color="#6200EE", recording=False)
         self._recording_icon = _create_icon(color="#E53935", recording=True)
 
         self.tray_icon = pystray.Icon(
             "whisper_keyboard",
             idle_icon,
-            "Whisper Keyboard",
+            "Whisper Keyboard - Starting...",
             menu=self._build_menu(),
         )
 
-        self._update_status("Ready")
-
-        self.is_listening = True
-        self.hotkey.start()
+        # Load model in background so tray appears immediately
+        threading.Thread(target=self._load_in_background, daemon=True).start()
 
         self.tray_icon.run()
+
+    def _load_in_background(self):
+        """Load Whisper model in background thread, then start hotkey."""
+        try:
+            self._update_status("Loading Whisper model...")
+            self.setup()
+            self._update_status("Ready")
+            print("[Whisper Keyboard] Ready — hold Win+Alt to speak")
+            self.is_listening = True
+            self.hotkey.start()
+        except Exception as e:
+            self._update_status(f"Startup error: {e}")
+            print(f"[Whisper Keyboard] Startup failed: {e}")
 
     def _build_menu(self) -> pystray.Menu:
         """Build the right-click context menu."""

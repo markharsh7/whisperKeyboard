@@ -3,6 +3,7 @@ Global hotkey listener for push-to-talk.
 Detects press-and-hold (start recording) and release (stop + transcribe).
 """
 
+import ctypes
 import threading
 import time
 from typing import Callable, Optional
@@ -74,10 +75,36 @@ class HotkeyListener:
         self._listener = keyboard.Listener(
             on_press=self._on_key_press,
             on_release=self._on_key_release,
+            win32_event_filter=self._win32_filter if self._has_win_key() else None,
         )
         self._listener.daemon = True
         self._listener.start()
         self._status(f"Hotkey listener started ({self.hotkey_str})")
+
+    def _has_win_key(self) -> bool:
+        """Check if the hotkey includes the Windows key."""
+        return any(
+            k == keyboard.Key.cmd or k == keyboard.Key.cmd_l
+            for k in self._keys
+        )
+
+    def _win32_filter(self, msg, data):
+        """
+        Suppress the Win key from opening Start menu when Alt is also held.
+        Only suppresses Win key events (VK_LWIN=0x5B, VK_RWIN=0x5C)
+        when the left Alt key (VK_MENU=0x12) is also pressed.
+        """
+        # WM_KEYDOWN = 0x0100, WM_SYSKEYDOWN = 0x0104
+        if msg in (0x0100, 0x0104):
+            try:
+                vk = data.vkCode
+            except AttributeError:
+                return True
+            # Suppress Win key only if Alt is also held
+            if vk in (0x5B, 0x5C):  # VK_LWIN, VK_RWIN
+                if ctypes.windll.user32.GetAsyncKeyState(0x12) & 0x8000:
+                    return False  # Suppress the Win key event
+        return True  # Allow all other events
 
     def stop(self) -> None:
         """Stop the hotkey listener."""
@@ -138,6 +165,8 @@ class HotkeyListener:
             return keyboard.Key.shift
         if key == keyboard.Key.alt_l or key == keyboard.Key.alt_r:
             return keyboard.Key.alt_l
+        if key == keyboard.Key.cmd_l or key == keyboard.Key.cmd_r:
+            return keyboard.Key.cmd
         return key
 
     def _status(self, msg: str) -> None:
