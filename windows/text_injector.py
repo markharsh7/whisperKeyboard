@@ -16,11 +16,12 @@ class TextInjector:
         self.typing_delay = typing_delay
 
     def type_text(self, text: str) -> None:
-        """Type a string character by character."""
-        for char in text:
-            self.keyboard.press(char)
-            self.keyboard.release(char)
-            time.sleep(self.typing_delay)
+        """Type a string, using pynput's native type() for speed and reliability."""
+        if not text:
+            return
+        # Small warmup tap to ensure keyboard controller is active
+        time.sleep(0.05)
+        self.keyboard.type(text)
 
     def tap_key(self, key) -> None:
         """Press and release a single key."""
@@ -48,34 +49,15 @@ class TextInjector:
 
     def execute_actions(self, final_text: str, actions: List[str], command_processor) -> None:
         """
-        Execute processed commands and type the remaining text.
-        
-        Actions from commands.py are applied in-place as we type:
-        - For edit commands (backspace, delete word, undo): send key events before typing
-        - For formatting commands (new line, tab, caps): insert text equivalents
-        - For text commands (emoji, punctuation): type their values
-        
-        Since commands were already extracted from text by CommandProcessor,
-        we just need to type the final text with any needed key events.
+        Execute commands and type the remaining text into the active window.
         """
-        # For simplicity: type the processed final text directly
-        # Editing commands like backspace are handled by sending key events
-        # before the text is committed
-        
         if not final_text and not actions:
             return
 
-        # For editing commands (backspace, delete word, undo, redo, select all):
-        # these modify the text field but don't produce visible text
-        edit_actions = {
-            "backspace": lambda c=1: self.send_backspace(c),
-            "delete word": lambda c=1: self.send_delete_word(c),
-            "undo": lambda: self.combo(Key.ctrl, "z"),
-            "redo": lambda: self.combo(Key.ctrl, "y"),
-            "select all": lambda: self.combo(Key.ctrl, "a"),
-        }
+        # Let focus settle after hotkey release
+        time.sleep(0.3)
 
-        # Send edit actions first
+        # Execute key-based commands first
         for action_name in actions:
             cmd = command_processor.get_command(action_name)
             if cmd and cmd.action == "key":
@@ -94,6 +76,6 @@ class TextInjector:
                 elif cmd.value == "tab":
                     self.tap_key(Key.tab)
 
-        # Type the final text (includes emoji, punctuation, newlines already embedded)
+        # Type the final text
         if final_text:
             self.type_text(final_text)

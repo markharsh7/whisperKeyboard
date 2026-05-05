@@ -3,7 +3,7 @@
 
 # Speech Recognition Settings
 whisper:
-  model_size: "small"         # tiny, base, small, medium, large
+  model_size: "medium"        # medium (best Hinglish), small, turbo, large-v3
   model_type: "multilingual"  # multilingual or english-only
   compute_type: "auto"        # auto, float16, int8 (CPU), int8_float16 (GPU)
   beam_size: 5
@@ -11,16 +11,18 @@ whisper:
   vad_filter: true            # Voice activity detection
   vad_threshold: 0.5          # VAD sensitivity (0.0 - 1.0)
   temperature: 0.0            # Sampling temperature (0 = greedy)
-  max_initial_prompt: ""      # Optional context text to improve recognition
+  initial_prompt: "main theek hoon, haan, nahi, kaise ho, accha, theek hai, kya kar rahe ho, mujhe, tumhe, aap"
 
 # Audio Settings
 audio:
   sample_rate: 16000          # 16kHz for Whisper
   channels: 1                 # Mono
   format: "int16"             # 16-bit PCM
+  input_device: null          # null = auto-detect best microphone, or device ID
   silence_threshold: 500      # RMS threshold for silence detection
   silence_duration: 1.5       # Seconds of silence to auto-stop
   max_record_duration: 30     # Maximum recording duration in seconds
+  mic_level_warn: 200         # Peak below this triggers a low-mic warning
 
 # Hotkey Settings (Windows only)
 hotkey:

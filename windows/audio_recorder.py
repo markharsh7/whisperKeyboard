@@ -49,7 +49,7 @@ class AudioRecorder:
         Start recording audio.
         
         Args:
-            on_level: Optional callback receiving RMS level (0.0-1.0) for visual feedback.
+            on_level: Optional callback receiving (rms, peak) tuple for visual feedback.
         """
         if self._recording:
             return
@@ -64,7 +64,9 @@ class AudioRecorder:
             if self._recording:
                 self._audio_data.append(indata.copy())
                 if self._on_level:
-                    rms = np.sqrt(np.mean(indata.astype(np.float64) ** 2))
+                    data_f64 = indata.astype(np.float64)
+                    rms = float(np.sqrt(np.mean(data_f64 ** 2)))
+                    peak = float(np.max(np.abs(data_f64)))
                     level = min(rms / 32768.0, 1.0)
                     self._on_level(level)
 
@@ -154,6 +156,71 @@ class AudioRecorder:
                     "default_samplerate": dev["default_samplerate"],
                 })
         return devices
+
+    @staticmethod
+    def find_best_mic() -> int:
+        """
+        Auto-detect the best microphone device.
+        Prefers devices with 'Microphone' in the name over 'Stereo Mix' or 'Sound Mapper'.
+        Returns device ID or None for system default.
+        """
+        devices = AudioRecorder.list_devices()
+        if not devices:
+            return None
+
+        # Priority: any device with 'microphone' in the name (case-insensitive)
+        for d in devices:
+            name = d["name"].lower()
+            if "microphone" in name and "stereo" not in name:
+                return d["id"]
+
+        # Fallback: first device that's not a mapper or stereo mix
+        for d in devices:
+            name = d["name"].lower()
+            if "mapper" not in name and "stereo" not in name:
+                return d["id"]
+
+        # Last resort: first available device
+        return devices[0]["id"]
+
+    @staticmethod
+    def get_device_name(device_id: int) -> str:
+        """Get the name of an audio device by ID."""
+        try:
+            dev = sd.query_devices(device_id)
+            return dev["name"]
+        except Exception:
+            return f"Device {device_id}"
+
+    def check_level(self, duration: float = 1.0) -> dict:
+        """
+        Record briefly and return audio level statistics.
+        Used to verify the mic is capturing audible audio.
+        
+        Returns:
+            dict with rms, peak, is_audible keys.
+        """
+        import tempfile
+        audio_path = self.record(duration=duration)
+        if audio_path is None:
+            return {"rms": 0, "peak": 0, "is_audible": False}
+
+        import wave
+        with wave.open(audio_path, "rb") as wf:
+            frames = wf.readframes(wf.getnframes())
+            data = np.frombuffer(frames, dtype=np.int16)
+            if len(data) == 0:
+                return {"rms": 0, "peak": 0, "is_audible": False}
+            rms = float(np.sqrt(np.mean(data.astype(np.float64) ** 2)))
+            peak = float(np.max(np.abs(data)))
+            is_audible = peak > 200  # threshold for audible speech
+
+        try:
+            os.remove(audio_path)
+        except OSError:
+            pass
+
+        return {"rms": rms, "peak": peak, "is_audible": is_audible}
 
 
 class SilenceDetector:

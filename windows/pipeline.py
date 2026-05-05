@@ -13,7 +13,7 @@ from typing import Optional, Callable
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core.commands import CommandProcessor
-from core.text_post import post_process
+from core.text_post import post_process, pre_process_for_commands
 from core.config import load_config
 from windows.whisper_engine import WhisperEngine
 from windows.audio_recorder import AudioRecorder, SilenceDetector
@@ -28,11 +28,14 @@ class Pipeline:
         language: str = "auto",
         compute_type: str = "auto",
         device: str = "cpu",
+        input_device: Optional[int] = None,
+        initial_prompt: Optional[str] = None,
         enable_commands: bool = True,
         enable_post_processing: bool = True,
         on_status: Optional[Callable[[str], None]] = None,
     ):
         self.language = language
+        self.initial_prompt = initial_prompt
         self.enable_commands = enable_commands
         self.enable_post_processing = enable_post_processing
         self.on_status = on_status
@@ -44,7 +47,7 @@ class Pipeline:
             device=device,
         )
 
-        self.recorder = AudioRecorder()
+        self.recorder = AudioRecorder(device=input_device)
 
         self.command_processor = CommandProcessor() if enable_commands else None
 
@@ -125,21 +128,25 @@ class Pipeline:
         result = self.engine.transcribe(
             audio_path,
             language=None if self.language == "auto" else self.language,
+            initial_prompt=self.initial_prompt,
         )
 
         raw_text = result["text"]
 
+        # Strip auto-punctuation before command detection
+        clean_text = pre_process_for_commands(raw_text)
+
         # Process voice commands in the text
         actions = []
         if self.enable_commands and self.command_processor:
-            processed_text, actions = self.command_processor.process_text(raw_text)
+            processed_text, actions = self.command_processor.process_text(clean_text)
         else:
-            processed_text = raw_text
+            processed_text = clean_text
 
-        # Post-process (capitalization, spacing, Hinglish corrections)
+        # Post-process (capitalization, spacing, Hinglish corrections, transliteration)
         final_text = processed_text
         if self.enable_post_processing:
-            final_text = post_process(processed_text, self.language)
+            final_text = post_process(processed_text, self.language, result["language"])
 
         # Clean up temp audio
         try:
@@ -166,19 +173,22 @@ class Pipeline:
         result = self.engine.transcribe(
             audio_path,
             language=None if self.language == "auto" else self.language,
+            initial_prompt=self.initial_prompt,
         )
 
         raw_text = result["text"]
 
+        clean_text = pre_process_for_commands(raw_text)
+
         actions = []
         if self.enable_commands and self.command_processor:
-            processed_text, actions = self.command_processor.process_text(raw_text)
+            processed_text, actions = self.command_processor.process_text(clean_text)
         else:
-            processed_text = raw_text
+            processed_text = clean_text
 
         final_text = processed_text
         if self.enable_post_processing:
-            final_text = post_process(processed_text, self.language)
+            final_text = post_process(processed_text, self.language, result["language"])
 
         return {
             "raw_text": raw_text,

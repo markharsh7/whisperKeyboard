@@ -15,7 +15,12 @@ class Command:
         self.action: str = data["action"]  # text, key, key_combo, caps
         self.value: str = data["value"]
         self.count: int = data.get("count", 1)
+        self.aliases: list = data.get("aliases", [])
         self.description: str = data.get("description", "")
+
+    def all_phrases(self) -> list:
+        """Return the primary phrase and all aliases."""
+        return [self.phrase] + self.aliases
 
     def __repr__(self):
         return f"Command(phrase={self.phrase!r}, action={self.action!r}, value={self.value!r})"
@@ -32,7 +37,7 @@ class CommandProcessor:
         self._load_commands(config_path)
 
     def _load_commands(self, config_path: Optional[str] = None):
-        """Load command definitions from YAML."""
+        """Load command definitions from YAML, indexing both phrases and aliases."""
         if config_path is None:
             config_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), "commands.yaml"
@@ -46,7 +51,11 @@ class CommandProcessor:
 
         for item in data["commands"]:
             cmd = Command(item)
+            # Index primary phrase
             self.commands[cmd.phrase.lower()] = cmd
+            # Index all aliases to the same command
+            for alias in cmd.aliases:
+                self.commands[alias.lower()] = cmd
 
     def find_command(self, word_sequence: List[str]) -> Optional[Command]:
         """

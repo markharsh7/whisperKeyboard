@@ -8,6 +8,7 @@ import sys
 import threading
 import time
 from io import BytesIO
+from typing import Optional
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -18,6 +19,7 @@ from core.commands import CommandProcessor
 from windows.pipeline import Pipeline
 from windows.hotkey_listener import HotkeyListener
 from windows.text_injector import TextInjector
+from windows.audio_recorder import AudioRecorder
 
 
 def _create_icon(color: str = "#6200EE", recording: bool = False) -> Image.Image:
@@ -51,12 +53,16 @@ class TrayApp:
         hotkey: str = "cmd+alt",
         compute_type: str = "auto",
         device: str = "cpu",
+        input_device: Optional[int] = None,
+        initial_prompt: Optional[str] = None,
     ):
         self.model_size = model_size
         self.language = language
         self.hotkey_str = hotkey
         self.compute_type = compute_type
         self.device = device
+        self.input_device = input_device
+        self.initial_prompt = initial_prompt
 
         # Core components
         self.pipeline: Pipeline = None
@@ -82,6 +88,8 @@ class TrayApp:
             language=self.language,
             compute_type=self.compute_type,
             device=self.device,
+            input_device=self.input_device,
+            initial_prompt=self.initial_prompt,
             enable_commands=True,
             enable_post_processing=True,
             on_status=self._update_status,
@@ -118,6 +126,30 @@ class TrayApp:
         try:
             self._update_status("Loading Whisper model...")
             self.setup()
+
+            # Report audio device info
+            rec = self.pipeline.recorder
+            dev_name = AudioRecorder.get_device_name(rec.device) if rec.device is not None else "System Default"
+            print(f"[Whisper Keyboard] Mic: {dev_name}")
+
+            # Check audio levels
+            self._update_status("Checking mic levels...")
+            level = rec.check_level(duration=0.5)
+            print(f"[Whisper Keyboard] Mic level — RMS: {level['rms']:.0f}  Peak: {level['peak']:.0f}  Audible: {level['is_audible']}")
+
+            if not level["is_audible"]:
+                print("[Whisper Keyboard] WARNING: Mic level too low! Check:")
+
+                alt_devices = [d for d in AudioRecorder.list_devices()
+                               if "microphone" in d["name"].lower() and d["id"] != rec.device]
+                if alt_devices:
+                    print(f"  Try device: {alt_devices[0]['name']} (ID {alt_devices[0]['id']})")
+                    print(f"  Set in core/config.yaml: audio.input_device: {alt_devices[0]['id']}")
+                else:
+                    print("  - Check Windows mic privacy settings")
+                    print("  - Check mic is not muted in Sound settings")
+                    print("  - Try a different USB/headset mic")
+
             self._update_status("Ready")
             print("[Whisper Keyboard] Ready — hold Win+Alt to speak")
             self.is_listening = True
@@ -168,16 +200,16 @@ class TrayApp:
 
     def _open_settings(self, icon, item) -> None:
         """Open the settings window."""
-        # Import locally to avoid circular dependency
         from windows.settings_window import open_settings
         open_settings(
             current_model=self.model_size,
             current_language=self.language,
             current_hotkey=self.hotkey_str,
+            current_input_device=self.input_device,
             on_save=self._on_settings_saved,
         )
 
-    def _on_settings_saved(self, model: str, language: str, hotkey: str) -> None:
+    def _on_settings_saved(self, model: str, language: str, hotkey: str, input_device: int = None) -> None:
         """Handle settings changes."""
         changed = False
         if model != self.model_size:
@@ -196,6 +228,9 @@ class TrayApp:
                 on_status=self._update_status,
             )
             self.hotkey.start()
+        if input_device != self.input_device:
+            self.input_device = input_device
+            changed = True
         if changed:
             self._reload_pipeline()
 
@@ -206,6 +241,8 @@ class TrayApp:
             language=self.language,
             compute_type=self.compute_type,
             device=self.device,
+            input_device=self.input_device,
+            initial_prompt=self.initial_prompt,
             enable_commands=True,
             enable_post_processing=True,
             on_status=self._update_status,
@@ -253,19 +290,22 @@ class TrayApp:
             result = self.pipeline.engine.transcribe(
                 audio_path,
                 language=None if self.language == "auto" else self.language,
+                initial_prompt=self.initial_prompt,
             )
 
             raw_text = result["text"]
-            processed_text, actions = self.command_processor.process_text(raw_text)
 
-            from core.text_post import post_process
-            final_text = post_process(processed_text, self.language)
+            from core.text_post import post_process, pre_process_for_commands
+            clean_text = pre_process_for_commands(raw_text)
+            processed_text, actions = self.command_processor.process_text(clean_text)
+            final_text = post_process(processed_text, self.language, result["language"])
 
             if final_text or actions:
                 self._update_status("Done")
                 print(f"[Whisper] {final_text!r}" + (f"  cmds={actions}" if actions else ""))
-                time.sleep(0.1)
+                print(f"[Whisper] Typing into active window...")
                 self.injector.execute_actions(final_text, actions, self.command_processor)
+                print(f"[Whisper] Type complete")
             else:
                 self._update_status("No speech detected")
 

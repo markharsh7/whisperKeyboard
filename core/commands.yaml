@@ -228,99 +228,119 @@ commands:
   - phrase: "smile emoji"
     action: text
     value: "😊"
+    aliases: ["smile face", "smiling face", "happy face"]
     description: "Insert smiling face"
 
   - phrase: "laugh emoji"
     action: text
     value: "😂"
+    aliases: ["laugh face", "laughing face", "laughing emoji"]
     description: "Insert laughing face"
 
   - phrase: "heart emoji"
     action: text
     value: "❤️"
+    aliases: ["love emoji", "heart", "love heart"]
     description: "Insert red heart"
 
   - phrase: "thumbs up emoji"
     action: text
     value: "👍"
+    aliases: ["thumbs up", "like emoji"]
     description: "Insert thumbs up"
 
   - phrase: "thumbs down emoji"
     action: text
     value: "👎"
+    aliases: ["thumbs down", "dislike emoji"]
     description: "Insert thumbs down"
 
   - phrase: "clap emoji"
     action: text
     value: "👏"
+    aliases: ["clapping", "clap", "clapping emoji"]
     description: "Insert clapping hands"
 
   - phrase: "fire emoji"
     action: text
     value: "🔥"
+    aliases: ["fire", "lit emoji"]
     description: "Insert fire"
 
   - phrase: "cry emoji"
     action: text
     value: "😢"
+    aliases: ["cry face", "crying face", "crying emoji", "sad cry"]
     description: "Insert crying face"
 
   - phrase: "angry emoji"
     action: text
     value: "😠"
+    aliases: ["angry face", "anger emoji", "mad emoji"]
     description: "Insert angry face"
 
   - phrase: "wink emoji"
     action: text
     value: "😉"
+    aliases: ["wink face", "winking emoji"]
     description: "Insert winking face"
 
   - phrase: "sad emoji"
     action: text
     value: "😔"
+    aliases: ["sad face"]
     description: "Insert sad face"
 
   - phrase: "cool emoji"
     action: text
     value: "😎"
+    aliases: ["cool face", "sunglasses emoji"]
     description: "Insert cool face with sunglasses"
 
   - phrase: "party emoji"
     action: text
     value: "🎉"
+    aliases: ["party", "celebration emoji"]
     description: "Insert party popper"
 
   - phrase: "pray emoji"
     action: text
     value: "🙏"
+    aliases: ["pray", "prayer emoji", "namaste", "thank you emoji"]
     description: "Insert folded hands"
 
   - phrase: "ok emoji"
     action: text
     value: "👌"
+    aliases: ["ok hand", "okay emoji"]
     description: "Insert OK hand"
 
   - phrase: "hundred emoji"
     action: text
     value: "💯"
+    aliases: ["hundred", "one hundred", "keep it a hundred"]
     description: "Insert hundred points"
 
   - phrase: "eyes emoji"
     action: text
     value: "👀"
+    aliases: ["eyes", "looking emoji"]
     description: "Insert eyes"
 
   - phrase: "rocket emoji"
     action: text
     value: "🚀"
+    aliases: ["rocket", "launch emoji"]
     description: "Insert rocket"
 
   - phrase: "check mark emoji"
     action: text
     value: "✅"
+    aliases: ["check mark", "tick mark", "green tick"]
     description: "Insert check mark"
 
   - phrase: "cross mark emoji"
     action: text
     value: "❌"
+    aliases: ["cross mark", "red cross", "x mark"]
     description: "Insert cross mark"

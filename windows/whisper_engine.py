@@ -78,6 +78,7 @@ class WhisperEngine:
         vad_filter: bool = True,
         vad_parameters: Optional[dict] = None,
         temperature: float = 0.0,
+        initial_prompt: Optional[str] = None,
     ) -> dict:
         """
         Transcribe an audio file to text.
@@ -89,6 +90,7 @@ class WhisperEngine:
             vad_filter: Enable voice activity detection.
             vad_parameters: VAD configuration dict.
             temperature: Sampling temperature (0 = greedy).
+            initial_prompt: Optional text to bias the model (improves Hinglish).
 
         Returns:
             dict with keys: text, language, segments, duration
@@ -103,14 +105,17 @@ class WhisperEngine:
             "duration": 0.0,
         }
 
-        segments, info = self._model.transcribe(
-            audio_path,
-            language=language,
-            beam_size=beam_size,
-            vad_filter=vad_filter,
-            vad_parameters=vad_parameters,
-            temperature=temperature,
-        )
+        transcribe_kwargs = {
+            "language": language,
+            "beam_size": beam_size,
+            "vad_filter": vad_filter,
+            "vad_parameters": vad_parameters,
+            "temperature": temperature,
+        }
+        if initial_prompt:
+            transcribe_kwargs["initial_prompt"] = initial_prompt
+
+        segments, info = self._model.transcribe(audio_path, **transcribe_kwargs)
 
         result["language"] = info.language
         result["duration"] = info.duration
