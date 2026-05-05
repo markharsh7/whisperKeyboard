@@ -1,0 +1,326 @@
+# Voice Command Definitions for Whisper Keyboard
+# Used by both Windows and Android platforms
+# Format: spoken_phrase -> action_type, action_value
+
+commands:
+  # ---------- Punctuation ----------
+  - phrase: "full stop"
+    action: text
+    value: "."
+    description: "Insert period"
+
+  - phrase: "comma"
+    action: text
+    value: ","
+    description: "Insert comma"
+
+  - phrase: "question mark"
+    action: text
+    value: "?"
+    description: "Insert question mark"
+
+  - phrase: "exclamation mark"
+    action: text
+    value: "!"
+    description: "Insert exclamation mark"
+
+  - phrase: "colon"
+    action: text
+    value: ":"
+    description: "Insert colon"
+
+  - phrase: "semicolon"
+    action: text
+    value: ";"
+    description: "Insert semicolon"
+
+  - phrase: "dash"
+    action: text
+    value: "-"
+    description: "Insert dash"
+
+  - phrase: "hyphen"
+    action: text
+    value: "-"
+    description: "Insert hyphen (same as dash)"
+
+  - phrase: "ellipsis"
+    action: text
+    value: "..."
+    description: "Insert ellipsis"
+
+  - phrase: "open bracket"
+    action: text
+    value: "("
+    description: "Insert opening bracket"
+
+  - phrase: "close bracket"
+    action: text
+    value: ")"
+    description: "Insert closing bracket"
+
+  - phrase: "open square bracket"
+    action: text
+    value: "["
+    description: "Insert opening square bracket"
+
+  - phrase: "close square bracket"
+    action: text
+    value: "]"
+    description: "Insert closing square bracket"
+
+  - phrase: "open quote"
+    action: text
+    value: '"'
+    description: "Insert opening double quote"
+
+  - phrase: "close quote"
+    action: text
+    value: '"'
+    description: "Insert closing double quote"
+
+  - phrase: "single quote"
+    action: text
+    value: "'"
+    description: "Insert single quote"
+
+  - phrase: "apostrophe"
+    action: text
+    value: "'"
+    description: "Insert apostrophe"
+
+  - phrase: "slash"
+    action: text
+    value: "/"
+    description: "Insert forward slash"
+
+  - phrase: "backslash"
+    action: text
+    value: "\\"
+    description: "Insert backslash"
+
+  - phrase: "at sign"
+    action: text
+    value: "@"
+    description: "Insert at sign"
+
+  - phrase: "hash tag"
+    action: text
+    value: "#"
+    description: "Insert hash"
+
+  - phrase: "dollar sign"
+    action: text
+    value: "$"
+    description: "Insert dollar sign"
+
+  - phrase: "percent sign"
+    action: text
+    value: "%"
+    description: "Insert percent sign"
+
+  - phrase: "ampersand"
+    action: text
+    value: "&"
+    description: "Insert ampersand"
+
+  - phrase: "star"
+    action: text
+    value: "*"
+    description: "Insert asterisk"
+
+  - phrase: "plus sign"
+    action: text
+    value: "+"
+    description: "Insert plus"
+
+  - phrase: "equals sign"
+    action: text
+    value: "="
+    description: "Insert equals"
+
+  - phrase: "pipe"
+    action: text
+    value: "|"
+    description: "Insert pipe"
+
+  - phrase: "tilde"
+    action: text
+    value: "~"
+    description: "Insert tilde"
+
+  - phrase: "underscore"
+    action: text
+    value: "_"
+    description: "Insert underscore"
+
+  # ---------- Whitespace / Newlines ----------
+  - phrase: "new line"
+    action: key
+    value: "enter"
+    description: "Insert newline"
+
+  - phrase: "new paragraph"
+    action: key
+    value: "enter"
+    count: 2
+    description: "Insert two newlines"
+
+  - phrase: "space bar"
+    action: text
+    value: " "
+    description: "Insert space"
+
+  - phrase: "tab"
+    action: key
+    value: "tab"
+    description: "Insert tab"
+
+  # ---------- Editing Commands ----------
+  - phrase: "backspace"
+    action: key
+    value: "backspace"
+    description: "Delete previous character"
+
+  - phrase: "delete word"
+    action: key
+    value: "ctrl_backspace"
+    description: "Delete previous word"
+
+  - phrase: "delete line"
+    action: key_combo
+    value: ["ctrl", "backspace"]
+    count: 10
+    description: "Delete current line (approximate)"
+
+  - phrase: "undo"
+    action: key
+    value: "ctrl_z"
+    description: "Undo last action"
+
+  - phrase: "redo"
+    action: key
+    value: "ctrl_y"
+    description: "Redo last undone action"
+
+  - phrase: "select all"
+    action: key
+    value: "ctrl_a"
+    description: "Select all text"
+
+  # ---------- Capitalization ----------
+  - phrase: "all caps"
+    action: caps
+    value: "upper"
+    description: "Capitalize ALL letters of next word"
+
+  - phrase: "lower case"
+    action: caps
+    value: "lower"
+    description: "Lowercase next word"
+
+  - phrase: "title case"
+    action: caps
+    value: "title"
+    description: "Title-case next word"
+
+  # ---------- Emojis ----------
+  - phrase: "smile emoji"
+    action: text
+    value: "😊"
+    description: "Insert smiling face"
+
+  - phrase: "laugh emoji"
+    action: text
+    value: "😂"
+    description: "Insert laughing face"
+
+  - phrase: "heart emoji"
+    action: text
+    value: "❤️"
+    description: "Insert red heart"
+
+  - phrase: "thumbs up emoji"
+    action: text
+    value: "👍"
+    description: "Insert thumbs up"
+
+  - phrase: "thumbs down emoji"
+    action: text
+    value: "👎"
+    description: "Insert thumbs down"
+
+  - phrase: "clap emoji"
+    action: text
+    value: "👏"
+    description: "Insert clapping hands"
+
+  - phrase: "fire emoji"
+    action: text
+    value: "🔥"
+    description: "Insert fire"
+
+  - phrase: "cry emoji"
+    action: text
+    value: "😢"
+    description: "Insert crying face"
+
+  - phrase: "angry emoji"
+    action: text
+    value: "😠"
+    description: "Insert angry face"
+
+  - phrase: "wink emoji"
+    action: text
+    value: "😉"
+    description: "Insert winking face"
+
+  - phrase: "sad emoji"
+    action: text
+    value: "😔"
+    description: "Insert sad face"
+
+  - phrase: "cool emoji"
+    action: text
+    value: "😎"
+    description: "Insert cool face with sunglasses"
+
+  - phrase: "party emoji"
+    action: text
+    value: "🎉"
+    description: "Insert party popper"
+
+  - phrase: "pray emoji"
+    action: text
+    value: "🙏"
+    description: "Insert folded hands"
+
+  - phrase: "ok emoji"
+    action: text
+    value: "👌"
+    description: "Insert OK hand"
+
+  - phrase: "hundred emoji"
+    action: text
+    value: "💯"
+    description: "Insert hundred points"
+
+  - phrase: "eyes emoji"
+    action: text
+    value: "👀"
+    description: "Insert eyes"
+
+  - phrase: "rocket emoji"
+    action: text
+    value: "🚀"
+    description: "Insert rocket"
+
+  - phrase: "check mark emoji"
+    action: text
+    value: "✅"
+    description: "Insert check mark"
+
+  - phrase: "cross mark emoji"
+    action: text
+    value: "❌"
+    description: "Insert cross mark"

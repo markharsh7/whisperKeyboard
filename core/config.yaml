@@ -1,0 +1,47 @@
+# Whisper Keyboard Shared Configuration
+# This file is the single source of truth for settings used by both platforms.
+
+# Speech Recognition Settings
+whisper:
+  model_size: "tiny"          # tiny, base, small, medium, large
+  model_type: "multilingual"  # multilingual or english-only
+  compute_type: "auto"        # auto, float16, int8 (CPU), int8_float16 (GPU)
+  beam_size: 5
+  language: "auto"            # auto, en, hi
+  vad_filter: true            # Voice activity detection
+  vad_threshold: 0.5          # VAD sensitivity (0.0 - 1.0)
+  temperature: 0.0            # Sampling temperature (0 = greedy)
+  max_initial_prompt: ""      # Optional context text to improve recognition
+
+# Audio Settings
+audio:
+  sample_rate: 16000          # 16kHz for Whisper
+  channels: 1                 # Mono
+  format: "int16"             # 16-bit PCM
+  silence_threshold: 500      # RMS threshold for silence detection
+  silence_duration: 1.5       # Seconds of silence to auto-stop
+  max_record_duration: 30     # Maximum recording duration in seconds
+
+# Hotkey Settings (Windows only)
+hotkey:
+  key: "ctrl+shift+v"         # Default push-to-talk hotkey
+  mode: "hold"                # hold = push-to-talk, toggle = tap to start/stop
+
+# Command Processing
+commands:
+  enabled: true               # Enable voice command parsing
+  config_file: "core/commands.yaml"
+
+# Text Post-Processing
+post_processing:
+  capitalize_sentences: true
+  auto_punctuation: true      # Add punctuation if Whisper didn't
+  auto_capitalize: true       # Capitalize first word
+  hinglish_corrections: true  # Apply Hinglish word corrections
+
+# Model Download
+model:
+  download_url_tiny: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.bin"
+  download_url_base: "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin"
+  storage_dir_windows: "./core/models/"
+  storage_dir_android: "models/"

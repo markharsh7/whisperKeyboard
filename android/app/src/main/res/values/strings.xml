@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Whisper Keyboard</string>
+    <string name="ime_name">Whisper Keyboard (Voice)</string>
+    <string name="settings_title">Whisper Keyboard Settings</string>
+    <string name="mic_button_desc">Tap to record, tap again to transcribe</string>
+</resources>

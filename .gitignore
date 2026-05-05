@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+*.so
+
+# Whisper models (large files)
+core/models/*.bin
+core/models/*.pt
+core/models/*.ggml
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+android/*.apk
+android/*.aab
+android/local.properties
+android/.idea/
+*.iml
+
+# Android native
+.cxx/
+.externalNativeBuild/
+
+# Windows
+windows/__pycache__/
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
