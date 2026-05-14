@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="12dp"
     android:background="@color/keyboard_bg"
-    android:minHeight="180dp">
+    android:minHeight="200dp">
 
     <ImageButton
         android:id="@+id/micButton"
@@ -20,6 +20,7 @@
         android:padding="16dp" />
 
     <TextView
+        android:id="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tap to speak"

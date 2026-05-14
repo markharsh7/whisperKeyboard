@@ -1,23 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Whisper Keyboard Settings"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="To enable this keyboard:\n\n1. Open System Settings\n2. Go to Language & Input\n3. Tap On-screen keyboard\n4. Enable Whisper Keyboard\n5. Switch keyboards using the globe key"
-        android:textSize="14sp"
-        android:lineSpacingExtra="4dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Whisper Keyboard Settings"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            android:layout_marginBottom="20dp" />
 
-</LinearLayout>
+        <!-- Model Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Model Size"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Smaller = faster, larger = more accurate"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="6dp" />
+
+        <Spinner
+            android:id="@+id/modelSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Language Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Language"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <RadioGroup
+            android:id="@+id/languageGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/langAuto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Auto-detect"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/langEnglish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="English"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/langHinglish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hinglish (Hindi + English)"
+                android:textSize="14sp" />
+        </RadioGroup>
+
+        <!-- Tap to Talk -->
+        <Switch
+            android:id="@+id/tapToTalkSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tap-to-talk mode (hold to record when off)"
+            android:textSize="14sp"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Haptics -->
+        <Switch
+            android:id="@+id/hapticsSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Haptic feedback"
+            android:textSize="14sp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Model Download -->
+        <Button
+            android:id="@+id/downloadModelButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Download Model (~484 MB)"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/clearCacheButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear Model Cache"
+            android:backgroundTint="#E53935"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Enable Instructions -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="How to enable this keyboard:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1. Open System Settings\n2. Go to Language &amp; Input\n3. Tap On-screen keyboard\n4. Enable Whisper Keyboard\n5. Switch keyboards using the globe key"
+            android:textSize="13sp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#666666" />
+
+    </LinearLayout>
+</ScrollView>

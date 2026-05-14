@@ -8,6 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
+        ndkVersion = "28.2.13676358"
         applicationId = "com.whisperkeyboard"
         minSdk = 26
         targetSdk = 34
@@ -21,11 +22,17 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
         }
     }
 
