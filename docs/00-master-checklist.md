@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-15 | [agents.md](../agents.md)
 
-**Progress:** All phases 1-8 complete ✅ — Project fully built with CI/CD
+**Progress:** Phases 1-4 complete ✅ | Phase 8 CI/CD ✅ | Android phases 5-7 deferred ⏸️
 
 ---
 
@@ -58,59 +58,19 @@ Last updated: 2026-05-15 | [agents.md](../agents.md)
 
 ---
 
-## Phase 5: Android On-Device Whisper Engine ✅
+## Phase 5: Android — Deferred ⏸️
 
-- [x] Set up `CMakeLists.txt` for whisper.cpp cross-compilation
-- [x] Create JNI bridge (`whisper_jni.cpp`, `whisper_jni.h`)
-- [x] Integrate whisper.cpp source as git submodule
-- [x] Bundle/download model on first run (small model for mobile)
-- [x] Link JNI with WhisperIME.kt → real transcription instead of placeholder
-- [x] Handle audio format conversion (raw PCM → 16kHz WAV for whisper)
-- [x] Build verified: compiles for arm64-v8a, armeabi-v7a, x86_64
+Android implementation (whisper.cpp JNI, IME service, settings) is deferred. Code remains in the `android/` directory for future use.
 
-**Status: Complete** — APK builds successfully.
+## Phase 6: Android Commands — Deferred ⏸️
 
----
-
-## Phase 6: Android Command Processing + Text Injection ✅
-
-- [x] Port `core/commands.yaml` parsing to Kotlin (`VoiceCommands.kt`, `CommandProcessor.kt`)
-- [x] Implement `CommandProcessor` in Kotlin (match phrases, extract actions)
-- [x] Port `core/text_post.py` logic (Hinglish corrections, capitalization, Devanagari transliteration) to Kotlin (`TextPostProcessor.kt`)
-- [x] Implement real text injection via `InputConnection.commitText()`
-- [x] Implement key-event commands (backspace, enter, tab, delete-word)
-- [x] Proper error handling and user feedback (toasts)
-- [x] End-to-end wire-up in WhisperIME.kt
-
-**Status: Complete** — Build verified.
-
----
-
-## Phase 7: Android Settings + Polish ✅
-
-- [x] Real settings activity (model selection, language, recording config)
-- [x] Haptic feedback on mic button press
-- [x] Recording duration limit and silence auto-stop
-- [x] Visual recording indicator (animate mic button / waveform)
-- [x] ProGuard/R8 configuration for release builds
-- [x] App icon and store metadata
-- [x] SharedPreferences persistence
-- [x] Model download/clear cache buttons
-- [x] Release build with minification
-
-**Status: Complete** — All Android phases done.
+## Phase 7: Android Settings — Deferred ⏸️
 
 
 ---
 
-## Phase 8: Cross-Platform Sync & CI/CD ✅
+## Phase 8: CI/CD ✅
 
 - [x] GitHub Actions workflow for auto-build on push to master
 - [x] Windows .exe build with PyInstaller
-- [x] Android release APK build with Gradle
 - [x] Auto-upload artifacts to GitHub Releases
-- [x] Shared config files (config.yaml, commands.yaml) between platforms
-- [x] Debug keystore generation for CI release builds
-- [x] ProGuard rules for Android release builds
-
-**Status: Complete** — Push to master triggers automatic build and release.

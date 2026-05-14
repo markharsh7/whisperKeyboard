@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Cross-platform voice-typing keyboard app. Speak via hotkey/mic button → transcribed locally via Whisper → text typed into active field. Targets **Windows desktop** (Python) and **Android IME** (Kotlin + C++).
+Cross-platform voice-typing keyboard app. Speak via hotkey/mic button → transcribed locally via Whisper → text typed into active field. **Current focus: Windows desktop** (Python). Android IME (Kotlin + C++) is deferred.
 
 **Hardware targets:**
 - Laptop: Intel i5 11th-gen, Iris Xe (CPU inference via `int8` quantized)
