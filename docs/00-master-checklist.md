@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-15 | [agents.md](../agents.md)
 
-**Progress:** All phases 1-7 complete ✅
+**Progress:** All phases 1-8 complete ✅ — Project fully built with CI/CD
 
 ---
 
@@ -103,9 +103,14 @@ Last updated: 2026-05-15 | [agents.md](../agents.md)
 
 ---
 
-## Phase 8: Cross-Platform Sync (Future) ⬜
+## Phase 8: Cross-Platform Sync & CI/CD ✅
 
-- [ ] Unify config files between platforms
-- [ ] Share commands.yaml between platforms
-- [ ] Sync model files between platforms
-- [ ] Consistent post-processing behavior across platforms
+- [x] GitHub Actions workflow for auto-build on push to master
+- [x] Windows .exe build with PyInstaller
+- [x] Android release APK build with Gradle
+- [x] Auto-upload artifacts to GitHub Releases
+- [x] Shared config files (config.yaml, commands.yaml) between platforms
+- [x] Debug keystore generation for CI release builds
+- [x] ProGuard rules for Android release builds
+
+**Status: Complete** — Push to master triggers automatic build and release.

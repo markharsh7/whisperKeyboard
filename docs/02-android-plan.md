@@ -121,3 +121,27 @@ Current state: **All phases complete** — on-device whisper, voice commands, te
 - [x] App icon (adaptive icon with mic foreground)
 - [x] Release build configuration (minification, shrink resources)
 - [x] Debug build with applicationIdSuffix
+
+---
+
+## Phase 8: CI/CD & Cross-Platform
+
+### 8.1 — GitHub Actions Workflow
+
+- [x] Create `.github/workflows/build.yml`
+- [x] Trigger on push to master branch
+- [x] Windows job: PyInstaller .exe build
+- [x] Android job: Gradle release APK build
+- [x] Auto-upload to GitHub Releases
+
+### 8.2 — Windows Packaging
+
+- [x] Create `windows/main.spec` for PyInstaller
+- [x] Bundle core/ config files and commands.yaml
+- [x] Include all Python dependencies
+
+### 8.3 — Android Release Signing
+
+- [x] Add signingConfigs to build.gradle.kts
+- [x] CI generates debug keystore for release builds
+- [x] Document how to add production keystore via secrets

@@ -8,6 +8,10 @@ venv/
 .venv/
 *.so
 
+# PyInstaller
+*.spec.bak
+windows/build/
+
 # Whisper models (large files)
 core/models/*.bin
 core/models/*.pt
@@ -25,6 +29,7 @@ android/*.apk
 android/*.aab
 android/local.properties
 android/.idea/
+android/debug.keystore
 *.iml
 
 # Android native
